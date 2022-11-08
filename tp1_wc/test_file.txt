@@ -1,0 +1,6 @@
+Bonjour je suis un fichier
+très long
+Dans lequel
+J'ai écris beaucoup de caractères différents
+sur des lignes différentes pour voir
+comment fonctionne le programme.
