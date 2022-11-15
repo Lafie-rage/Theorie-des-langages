@@ -1,10 +1,9 @@
 %%
         int row_count=0;
         int carac_count=0;
-[ \t]       ;
 \n          {row_count++;};
-[^ \t\n]    {carac_count++;};
-[\n$]       {printf("carac: %d, rows : %d\n", carac_count, row_count);};
+.    {carac_count++;};
+<<EOF>>       {printf("carac: %d, rows : %d\n", carac_count, row_count);}; return 0;
 %%
 
 int main(int argc, char **argv) {
@@ -19,5 +18,3 @@ int main(int argc, char **argv) {
     }
     exit(EXIT_SUCCESS);
 }
-
-
