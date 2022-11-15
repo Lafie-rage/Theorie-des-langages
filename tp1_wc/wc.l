@@ -1,11 +1,12 @@
 %%
-        int row_count=0;
-        int carac_count=0;
-\n          {row_count++;};
-.    {carac_count++;};
-<<EOF>>       {printf("carac: %d, rows : %d\n", carac_count, row_count);}; return 0;
+                        int row_count=0;
+                        int carac_count=0;
+                        int word_count=0;
+\n                      {row_count++;};
+.                       {carac_count++;};
+([^ \n\t])*             {word_count++;};
+<<EOF>>                 {printf("carac: %d, word: %d, rows : %d\n", carac_count, word_count, row_count); return 0;};
 %%
-
 int main(int argc, char **argv) {
     if(argc < 2) {
         printf("usage : %s filenameToBeAnalysed\n", argv[0]);
