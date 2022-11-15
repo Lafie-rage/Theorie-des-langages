@@ -2,9 +2,9 @@
                         int row_count=0;
                         int carac_count=0;
                         int word_count=0;
-\n                      {row_count++;};
-.                       {carac_count++;};
-([^ \n\t])*             {word_count++;};
+\n+                     {row_count+=yyleng; carac_count+=yyleng; word_count++;};
+[ \t\.\?\;\-\+]+        {word_count++; carac_count+=yyleng;};
+[^ \t\.\?\;\-\+\n]+     {carac_count+=yyleng;};
 <<EOF>>                 {printf("carac: %d, word: %d, rows : %d\n", carac_count, word_count, row_count); return 0;};
 %%
 int main(int argc, char **argv) {
