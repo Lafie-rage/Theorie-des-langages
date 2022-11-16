@@ -1,8 +1,25 @@
-all: calc_lex
-	gcc calc.yy.c -o calc -ll
+all: v1
 
-calc_lex: calc_v0.1.l
-	lex -o calc.yy.c $^
+v1: calc_lex_v1
+	gcc calc.tab.c calc.yy.c -o calc -ll -ly
+
+cal_lex_v1: calc_bison_v1 calc_v1.l
+	flex calc_v1.l -o calc_v1.yy.c
+
+calc_bison_v1: calc_v1.y
+	bison -d $^
+
+v0_2: calc_lex_v0_2
+	gcc calcv0.2.yy.c -o calc -ll
+
+calc_lex_v0_2: calc_v0.2.l
+	lex -o calcv0.2.yy.c $^
+
+v0_1: calc_lex_v0_1
+	gcc calcv0.1.yy.c -o calc -ll
+
+calc_lex_v0_1: calc_v0.1.l
+	lex -o calcv0.1.yy.c $^
 
 clean:
 	rm *.yy.c
