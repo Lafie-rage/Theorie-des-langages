@@ -1,12 +1,12 @@
-all: v0_3
+all: v0_3_mais_pas_vraiment
 
-v0_3: calc_lex_v0_3
+v0_3_mais_pas_vraiment: calc_lex_v0_3_mais_pas_vraiment
 	gcc calc.tab.c calc.yy.c -o calc -ll -ly
 
-calc_lex_v0_3: calc_v0.3.l calc_bison_v0_3 calc.tab.h
+calc_lex_v0_3_mais_pas_vraiment: calc_v0.3_mais_pas_vraiment.l calc_bison_v0_3_mais_pas_vraiment calc.tab.h
 	lex -o calc.yy.c $<
 
-calc_bison_v0_3: calc_v0.3.y
+calc_bison_v0_3_mais_pas_vraiment: calc_v0.3_mais_pas_vraiment.y
 	bison -d -o calc.tab.c $^
 
 v0_2: calc_lex_v0_2
