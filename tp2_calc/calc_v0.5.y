@@ -19,7 +19,7 @@
   list    : // vide
           | list expr RC      {
                                 if (isFloat) printf("=%f\nCalc>", $2);
-                                else printf("=%.0f\nCalc>", $2);
+                                else printf("=%d\nCalc>", (int)$2);
                                 isFloat = 0;
                               }
           | list assign RC    {printf("Calc>");}
