@@ -9,17 +9,21 @@
 
 %%
   list    : // vide
-          | list expr RC    {printf("=%d\nCalc>", $2);}
-          | list assign RC  {printf("Calc>");}
+          | list expr RC      {printf("=%d\nCalc>", $2);}
+          | list assign RC    {printf("Calc>");}
           | list RC
           ;
-  expr    : NBR             {$$ = $1;} // En réalité, c'est déjà le traitement par défaut
-          | ACC             {$$ = acc[$1];}
-          | NBR ADD NBR     {$$ = $1 + $3;}
-          | NBR SUB NBR     {$$ = $1 - $3;}
+
+  expr    : val
+          | expr ADD val      {$$ = $1 + $3;}
+          | expr SUB val      {$$ = $1 - $3;}
           ;
 
-  assign  : ACC AFF expr    {acc[$1] = $3;}
+  val     : NBR               {$$ = $1;}
+          | ACC               {$$ = acc[$1];}
+          ;
+
+  assign  : ACC AFF expr      {acc[$1] = $3;}
           ;
 %%
 
