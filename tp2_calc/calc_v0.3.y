@@ -8,7 +8,7 @@
 
 %%
   list  : // vide
-        | list expr RC    {printf("=%d\n", $2);}
+        | list expr RC    {printf("=%d\nCalc>", $2);}
         | list RC
         ;
   expr  : NBR             {$$ = $1;} // En réalité, c'est déjà le traitement par défaut
@@ -18,7 +18,7 @@
 %%
 
 int main(void) {
-  puts("Calc >");
+  printf("Calc >");
   yyparse();
   return 0;
 }
