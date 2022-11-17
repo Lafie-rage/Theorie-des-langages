@@ -2,7 +2,7 @@
     #include "calc.tab.h"
 %}
 Entier      0|[1-9][0-9]*
-Reel        [0-9]*\.[0_9]+
+Reel        [0-9]*\.[0-9]+
 minus       [a-z]
 majus       [A-Z]
 Nl          \n

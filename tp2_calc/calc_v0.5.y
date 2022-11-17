@@ -4,6 +4,7 @@
   void yyerror(char *);
   int acc[26]= {0};
   float accf[26] = {0};
+  int isFloat = 0;
 %}
 %start  list
 %union {
@@ -16,7 +17,11 @@
 %type   <fval>  expr val
 %%
   list    : // vide
-          | list expr RC      {printf("=%f\nCalc>", $2);}
+          | list expr RC      {
+                                if (isFloat) printf("=%f\nCalc>", $2);
+                                else printf("=%.0f\nCalc>", $2);
+                                isFloat = 0;
+                              }
           | list assign RC    {printf("Calc>");}
           | list RC
           ;
@@ -28,8 +33,8 @@
 
   val     : NBR               {$$ = $1;}
           | ACC               {$$ = acc[$1];}
-          | ACC_F             {$$ = accf[$1];}
-          | FLOAT             {$$ = $1;}
+          | ACC_F             {$$ = accf[$1]; isFloat = 1;}
+          | FLOAT             {$$ = $1; isFloat = 1;}
           ;
 
   assign  : ACC AFF expr      {acc[$1] = $3;}
