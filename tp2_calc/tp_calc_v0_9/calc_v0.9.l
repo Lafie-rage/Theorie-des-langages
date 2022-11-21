@@ -1,13 +1,15 @@
 %{
-    #include "symbol.h"
-    #include "calc.tab.h"
-    extern int lineNumber;
+    #include "symbol.h" // Récupération de la struct symbole et ses fonctions
+    #include "calc.tab.h" // Récupération de la table des token défini dans calc.y
+    extern int lineNumber; // Nombre de lignes, récupéré depuis calc.y
 %}
-Entier      0|[1-9][0-9]*
-Reel        [0-9]*\.[0-9]+
-Nl          \n
-Var         _?[a-zA-Z][a-zA-Z0-9\-]*
+Entier      0|[1-9][0-9]*               // Pattern des nombres entiers
+Reel        [0-9]*\.[0-9]+              // Pattern des nombres réels
+Nl          \n                          // Pattern d'un retour à la ligne
+Var         [_a-zA-Z][a-zA-Z0-9\-]*     // Pattern des noms de variable (commence par un _ ou une lettre puis suivit de lettres, nombres et -)
+QUIT        "quit".*                    // Pattern permettant de quitter le programme sans utiliser ctrl+D
 %%
+{QUIT}      {printf("Bye !\n"); return 0;};
 {Entier}    {yylval.dval = atoi(yytext); return NBR;};
 {Reel}      {yylval.fval = atof(yytext); return FLOAT;};
 {Nl}        {lineNumber++; return RC;};

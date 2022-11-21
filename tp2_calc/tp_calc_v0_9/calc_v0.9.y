@@ -55,18 +55,41 @@
                                             $$ =  $1->U.dVal;
                                             isFloat = 1;
                                           }
+          | UNDEF                         {$$ = $1->U.dVal;}
           | FLOAT                         {$$ = $1; isFloat = 1;}
           ;
 
-  assign  : IVAR AFF expr                 {$1->U.iVal = $3;}
-          | FVAR AFF expr                 {$1->U.dVal = $3;}
+  assign  : IVAR AFF expr                 {
+                                            if(isFloat){
+                                              yyerror("Incompatible cast : Trying to cast float to integer");
+                                              YYERROR;
+                                            }
+                                            else $1->U.iVal = $3;
+                                          }
+          | FVAR AFF expr                 {
+                                            if(isFloat) {
+                                              $1->U.dVal = $3; isFloat=1;
+                                              isFloat = 1;
+                                            } else {
+                                              $1->U.iVal = $3;
+                                            }
+                                          }
+          | UNDEF AFF expr                {
+                                            if(isFloat) {
+                                              $1->U.dVal = $3;
+                                              $1->type=FVAR;
+                                              isFloat = 1;
+                                            } else {
+                                              $1->U.iVal = $3;
+                                              $1->type=IVAR;
+                                            }
+                                          }
           ;
 %%
 
 int main(void) {
   init();
   yyparse();
-
   return 0;
 }
 
