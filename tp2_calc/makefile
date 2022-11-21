@@ -1,4 +1,15 @@
-all: v0_7
+all: v0_8
+
+# v0.8
+
+v0_8: calc_lex_v0_8
+	gcc calc.tab.c calc.yy.c -o calc -ll -ly
+
+calc_lex_v0_8: calc_v0.8.l calc_bison_v0_8 calc.tab.h
+	lex -o calc.yy.c $<
+
+calc_bison_v0_8: calc_v0.8.y
+	bison -d -o calc.tab.c $^
 
 # v0.7
 
