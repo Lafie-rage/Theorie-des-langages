@@ -3,6 +3,7 @@
   int yylex(void);
   void yyerror(char *);
   void init(void);
+  void promptResult(float);
   int acc[26]= {0};
   float accf[26] = {0};
   int isFloat = 0;
@@ -20,8 +21,7 @@
 %%
   list    : // vide
           | list expr RC      {
-                                if (isFloat) printf("=%f\n", $2);
-                                else printf("=%d\n", (int)$2);
+                                promptResult($2);
                                 init();
                               }
           | list assign RC    {init();}
@@ -46,7 +46,7 @@
 %%
 
 int main(void) {
-  printf("Calc >");
+  init();
   yyparse();
   return 0;
 }
@@ -58,4 +58,9 @@ void yyerror(char *s) {
 void init(void) {
   printf("Calc %d>", lineNumber);
   isFloat = 0;
+}
+
+void promptResult(float val) {
+  if (isFloat) printf("=%f\n", val);
+  else printf("=%d\n", (int)val);
 }
