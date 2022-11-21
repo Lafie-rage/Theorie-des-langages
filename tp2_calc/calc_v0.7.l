@@ -10,11 +10,15 @@ Nl          \n
 %%
 {Entier}    {yylval.dval = atoi(yytext); return NBR;};
 {Reel}      {yylval.fval = atof(yytext); return FLOAT;};
-{Nl}        {lineNumber++; return RC; };
+{Nl}        {lineNumber++; return RC;};
 {minus}     {yylval.dval = yytext[0]-'a'; return ACC;};
 {majus}     {yylval.dval = yytext[0]-'A'; return ACC_F;};
 "+"         {return ADD;};
 "-"         {return SUB;};
+"*"         {return MUL;};
+"/"         {return DIV;};
+"("         {return PO;};
+")"         {return PF;};
 "="         {return AFF;};
 .           ;
 <<EOF>>     {printf("Au revoir\n"); return 0;};
