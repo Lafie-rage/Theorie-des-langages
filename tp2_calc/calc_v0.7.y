@@ -38,11 +38,7 @@
           | PO expr PF                    {$$ = $2;}
           | expr MUL expr                 {$$ = $1 * $3;}
           | expr DIV expr                 {
-                                            if($3 == 0) {
-                                              yyerror("Dividing by 0");
-                                              YYERROR;
-                                            } else
-                                              $$ = $1/$3;
+                                            $$ = $1/$3;
                                           }
           ;
 
