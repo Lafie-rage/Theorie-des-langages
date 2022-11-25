@@ -3,7 +3,7 @@
     #include "calc.tab.h" // Récupération de la table des token défini dans calc.y
     extern int lineNumber; // Nombre de lignes, récupéré depuis calc.y
 %}
-Entier      0|[1-9][0-9]*               
+Entier      0|[1-9][0-9]*
 Reel        [0-9]*\.[0-9]+
 Nl          \n
 Var         [_a-zA-Z][a-zA-Z0-9\-]*
@@ -29,6 +29,14 @@ QUIT        "quit".*
 "("         {return PO;};
 ")"         {return PF;};
 "="         {return AFF;};
+"=="        {return EQ;};
+"!="        {return N_EQ;};
+">"         {return SUP;};
+">="        {return SUP_EQ;};
+"<"         {return INF;};
+"<="        {return INF_EQ;};
+"&&"        {return AND;};
+"||"        {return OR;};
 .           ;
 <<EOF>>     {printf("Au revoir\n"); return 0;};
 %%

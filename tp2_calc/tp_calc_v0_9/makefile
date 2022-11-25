@@ -1,14 +1,14 @@
-all: v0_9
+all: v1
 
-# v0.9
+# v1
 
-v0_9: calc_lex_v0_9
+v1: calc_lex_v1 symbol.c
 	gcc calc.tab.c symbol.c calc.yy.c -o calc -ll -ly
 
-calc_lex_v0_9: calc_v0.9.l calc_bison_v0_9 calc.tab.h
+calc_lex_v1: calc_v1.0.l calc_bison_v1 calc.tab.h
 	lex -o calc.yy.c $<
 
-calc_bison_v0_9: calc_v0.9.y
+calc_bison_v1: calc_v1.0.y
 	bison -d -o calc.tab.c $^
 
 # CLEAN

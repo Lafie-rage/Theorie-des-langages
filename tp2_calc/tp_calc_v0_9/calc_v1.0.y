@@ -14,12 +14,12 @@
   float fval;
   pSymbol_t symb;
 }
-%token  RC ADD SUB MUL DIV PO PF AFF
+%token RC ADD SUB MUL DIV PO PF AFF EQ N_EQ SUP SUP_EQ INF INF_EQ AND OR
 %token <dval> NBR // On est obligé de les typer
 %token <fval> FLOAT
 %token <symb> UNDEF IVAR FVAR
-%type   <fval>  expr val
-%left ADD SUB MUL DIV
+%type  <fval>  expr val
+%left ADD SUB MUL DIV AND OR
 %nonassoc UMINUS
 %%
   list    : // vide
@@ -45,6 +45,14 @@
                                             } else
                                               $$ = $1/$3;
                                           }
+          | expr AND val                  {$$ = $1 && $3; isFloat = 0;}
+          | expr OR val                   {$$ = $1 || $3; isFloat = 0;}
+          | expr EQ val                   {$$ = $1 == $3; isFloat = 0;}
+          | expr N_EQ val                 {$$ = $1 != $3; isFloat = 0;}
+          | expr SUP val                  {$$ = $1 > $3; isFloat = 0;}
+          | expr SUP_EQ val               {$$ = $1 >= $3; isFloat = 0;}
+          | expr INF val                  {$$ = $1 < $3; isFloat = 0;}
+          | expr INF_EQ val               {$$ = $1 <= $3; isFloat = 0;}
           ;
 
   val     : NBR                           {$$ = $1;}
