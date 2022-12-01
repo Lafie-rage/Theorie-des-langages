@@ -33,3 +33,5 @@ symbol_t* lookUpSymbol(const char* tokenName) {
   }
   return SYMBOL_NULL;
 }
+
+#include "defSymbols.c"

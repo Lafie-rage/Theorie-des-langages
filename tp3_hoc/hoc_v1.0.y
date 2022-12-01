@@ -27,7 +27,7 @@
 /* Tokens pour les variables : passage de UNDEF vers IVAR/FVAR */
 %token <symb> IVAR FVAR
 /* Typage des unités syntaxiques */
-%type  <reel>  expr assign
+%type  <reel>  expr assign val
 %left ADD SUB MUL DIV AND OR NOT
 %right AFF
 %nonassoc UMINUS
@@ -42,12 +42,7 @@
           | list RC
           ;
 
-  expr    :
-            ENTIER                        {$$ = *(int *) $1->pValue;}
-          | REEL                          {memcpy((generic) &$$, $1->pValue, $1->size); isFloat = 1;}
-          | IVAR                          {$$ = *(int *) $1->pValue;}
-          | FVAR                          {$$ = *(double *) $1->pValue; isFloat = 1;/*}
-        | PREDEF PO expr PF             {$$ = ( *($1->U.pFct)) ($3); isFloat = 1;*/}
+  expr    : val
           | expr ADD expr                  {$$ = $1 + $3;}
           | expr SUB expr                  {$$ = $1 - $3;}
           | SUB expr  %prec UMINUS        {$$ = -$2;}
@@ -75,6 +70,12 @@
           | NOT expr                      {$$ = !($2);}
           ;
 
+  val     : ENTIER                        {$$ = *(int *) $1->pValue;}
+          | REEL                          {memcpy((generic) &$$, $1->pValue, $1->size); isFloat = 1;}
+          | IVAR                          {$$ = *(int *) $1->pValue;}
+          | FVAR                          {$$ = *(double *) $1->pValue; isFloat = 1;}
+          ;
+
   assign  : IVAR AFF expr                 {
                                             $$ = *(int *)$1->pValue = $3;
                                           }
@@ -100,6 +101,7 @@
 int main(void) {
   init();
   yyparse();
+  installDefaultSymbols();
   return 0;
 }
 

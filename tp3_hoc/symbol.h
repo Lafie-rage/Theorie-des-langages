@@ -1,3 +1,6 @@
+#ifndef SYMBOL_H
+#define  SYMBOL_H
+
 /**
  *  \struct generic
  *  \brief Définition du type de données générique.
@@ -24,3 +27,7 @@ typedef struct symbol* pSymbol_t;
 symbol_t* installSymbol(char * tokenName, short tokenClass, short tokenType, short tokenSize, generic tokenPtrValue);
 
 symbol_t* lookUpSymbol(const char* tokenName);
+
+void installDefaultSymbols(void);
+
+#endif
