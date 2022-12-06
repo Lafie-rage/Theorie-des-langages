@@ -11,6 +11,13 @@
  *	\brief		Définition du type de donnéés générique
  */
 typedef void * generic;
+
+/**
+ *  \typedef pFctmath_t
+ *  \brief Définition du type des fonctions mathématiques
+ */
+typedef double (*pFctMath_t)();
+
 /**
  *	\typedef	symbol_t
  * 	\brief		Définition du type de données "symbole" de type struct
@@ -52,7 +59,7 @@ symbol_t* installSymbol (char* tokenName, short tokenClas, short tokenType,
 symbol_t* lookUpSymbol (const char* tokenName);
 /**
  *	\fn         void installDefaultSymbols(void)
- *	\brief		Installe les symboles par défaut dans la table des symboles : 
+ *	\brief		Installe les symboles par défaut dans la table des symboles :
  *				<UL><LI>Constantes : PI, E, ...</LI>
  *					<LI>Fonctions mathématiques : sin(), cos(), ...
  *				</UL>
