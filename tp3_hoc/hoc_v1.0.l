@@ -1,6 +1,6 @@
 %{
-    #include "symbol.h" // Récupération de la struct symbole et ses fonctions
-    #include "hoc.tab.h" // Récupération de la table des token défini dans hoc.y
+    #define HOC_L
+    #include "hoc.h"
     extern int lineNumber; // Nombre de lignes, récupéré depuis hoc.y
 
     int installIntSymbol() {

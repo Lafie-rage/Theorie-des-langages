@@ -1,6 +1,5 @@
-#include <stdlib.h>
-#include <string.h>
-#include "symbol.h"
+#define SYMBOL_C_C
+#include "hoc.h"
 
 static pSymbol_t _symbolList=SYMBOL_NULL;
 

@@ -1,7 +1,3 @@
-#include <stdlib.h>
-#include "symbol.h"
-#include "hoc.tab.h"
-
 /**
  *  \var    _consts[]
  *  \brief  Déclaration des variables (constantes mathématiques) prédéfinines

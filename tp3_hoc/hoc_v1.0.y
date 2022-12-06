@@ -1,8 +1,6 @@
 %{
-  #include <stdio.h>
-  #include <stdlib.h>
-  #include <string.h>
-  #include "symbol.h"
+  #define HOC_Y
+  #include "hoc.h"
   int yylex(void);
   void yyerror(char *);
   void init(void);
@@ -14,7 +12,7 @@
 /* YYSTYPE : Définition des valeurs sémantiques (yylval renseignée par lex) */
 %union {
   int entier;
-  float reel;
+  double reel;
   pSymbol_t symb;
 }
 %token RC ADD SUB MUL DIV PO PF AFF EQ N_EQ SUP SUP_EQ INF INF_EQ AND OR NOT
@@ -28,7 +26,8 @@
 %token <symb> IVAR FVAR
 /* Typage des unités syntaxiques */
 %type  <reel>  expr assign val
-%left ADD SUB MUL DIV AND OR NOT
+%left ADD SUB
+%left MUL DIV
 %right AFF
 %nonassoc UMINUS
 %%
@@ -55,19 +54,6 @@
                                             } else
                                               $$ = $1/$3;
                                           }
-          | expr OR expr                   {
-                                            $$ = $1 || $3;
-                                            // On passe l'expression entant que non float, pour qu'il affiche 0 ou 1 simplement
-                                            isFloat = 0;
-                                          }
-          | expr AND expr                  {$$ = $1 && $3; isFloat = 0;}
-          | expr EQ expr                   {$$ = $1 == $3; isFloat = 0;}
-          | expr N_EQ expr                 {$$ = $1 != $3; isFloat = 0;}
-          | expr SUP expr                  {$$ = $1 > $3; isFloat = 0;}
-          | expr SUP_EQ expr               {$$ = $1 >= $3; isFloat = 0;}
-          | expr INF expr                  {$$ = $1 < $3; isFloat = 0;}
-          | expr INF_EQ expr               {$$ = $1 <= $3; isFloat = 0;}
-          | NOT expr                      {$$ = !($2);}
           ;
 
   val     : ENTIER                        {$$ = *(int *) $1->pValue;}
