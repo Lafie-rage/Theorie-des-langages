@@ -64,7 +64,7 @@ assgn :
         }
     }
 	;
-opAlg : ADD | SUB | MUL | DIV
+opAlg : ADD | SUB | MUL | DIV;
 
 expr :	ENTIER 			{ $$=*(int *)$1->U.pValue; }
     | REEL 				{ memcpy((generic)&$$, $1->U.pValue, $1->size); isFloat=1;}
@@ -74,7 +74,7 @@ expr :	ENTIER 			{ $$=*(int *)$1->U.pValue; }
 	| PO expr PF  		{ $$=$2; }
 	| expr opAlg expr 	{ $$ = (*($2->U.pFct))($1, $3); }
 	| SUB expr 			{ $$ = -$2; } %prec UNARY_MINUS
-	| PREDEF PO expr PF { $$ = (*($1->U.pFct))($3); isFloat=1;}
+	| PREDEF PO expr PF { printf("yacc %s, %d, %d, %p\n", $1->name, $1->clas, $1->type, $1->U.pFct); $$ = (*($1->U.pFct))($3);  isFloat=1;}
 	;
 %%
 

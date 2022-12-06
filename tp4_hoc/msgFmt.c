@@ -11,7 +11,7 @@ static struct { short iStyle; char* msg; } _msgFmt[]  = {
  *				Annonces, informations, configuration
  */
     /* 0*/  1,  "Welcome to the High Order Calculator\nImplemented by Corentin Destrez and ElKhattabi™\n",
-    /* 1*/  2,  "Version 1.2\n",
+    /* 1*/  2,  "Version 1.3\n",
     /* 2*/  1,  "\nlogout\nI hope to see you nice !!\n",
     /* 3*/  2,  "Loading: Constants ",
     /* 4*/  2,  "(done) Functions ",

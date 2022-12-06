@@ -15,18 +15,20 @@ entier		[0-9]+
 reel		([0-9]+\.?)|([0-9]*\.[0-9]+)
 ident		[a-zA-Z][a-zA-Z_0-9]*
 carExclu	[^a-zA-Z_0-9\.+\-*/=()\n]+
-operateur ("+"|"-"|"*"|"/")
+operateur ("+"|"-"|"*"|"/"|"("|")")
 %%
 "quit"		return 0;
 {entier}    { return installIntSymbol();};
 {reel}      { return installDoubleSymbol();};
 {ident}		{ symbol_t* mySp =  lookUpSymbol(yytext);
     		if (mySp==NULL) mySp=installSymbol(yytext,VAR,UNDEF,0,NULL);
-            yylval.symb   = mySp; return mySp->type;};
+            yylval.symb   = mySp;
+            printf("lex %s, %d, %d, %p\n", mySp->name, mySp->clas, mySp->type, mySp->U.pFct);
+            return mySp->type;};
 {operateur}			{
-        				yylval.symb = lookUpSymbol(yytext);
-        				if(yylval.symb == NULL) exeError("Opérateur [%s] inconnu", yytext);
-        				return (yylval.symb)->type;
+          				yylval.symb = lookUpSymbol(yytext);
+          				if(yylval.symb == NULL) exeError("Opérateur [%s] inconnu", yytext);
+          				return (yylval.symb)->type;
                 };
 "="         return AFF;
 \n			return RC;

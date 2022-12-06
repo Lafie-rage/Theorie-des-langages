@@ -30,7 +30,7 @@ codeHoc.o: codeHoc.c
 	gcc -c codeHoc.c
 
 clean:
-	rm -f $(OBJS) hoc.tab.h hoc.c lex.yy.c *~
+	rm -f $(OBJS) hoc.c lex.yy.c *~
 
 edit:
 	gedit $(SRC) &
