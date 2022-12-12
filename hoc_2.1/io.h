@@ -6,6 +6,38 @@
 */
 #ifndef _IO_H_
 #define _IO_H_
+
+/******************************************************************************/
+/**                               ERROR TYPES                                **/
+/******************************************************************************/
+#define LEXICAL                 1
+#define SYNTACTIC               2
+#define SEMANTIC                3
+#define EXECUTION               4
+
+/******************************************************************************/
+/**                            LEXICAL ERROR CODES                           **/
+/******************************************************************************/
+#define LEX_ERR_UNK_WORD        101
+#define LEX_ERR_UNK_OP          102
+
+/******************************************************************************/
+/**                             SYNTAX ERROR CODES                           **/
+/******************************************************************************/
+#define SYN_ERR_DEFAULT         201
+#define SYN_ERR_MULTI_OP        202
+
+/******************************************************************************/
+/**                            SEMANTIC ERROR CODES                          **/
+/******************************************************************************/
+#define SEM_ERR_DIV_ZERO        301
+
+/******************************************************************************/
+/**                          EXECUTION ERROR CODES                           **/
+/******************************************************************************/
+#define EXE_ERR_NOT_VAR         401
+#define EXE_ERR_UNDEF_VAR       402
+
 /******************************************************************************/
 /**
  *	\part		G E S T I O N   DES  S O R T I E S
@@ -55,7 +87,7 @@ void lexError (const char* strErr, ...);
 /**
  *	\fn			void exeError (const char* strErr, ...)
  *	\brief		Fonction de gestion des erreurs d'exécution de fonctions importées,
- *	\note		comme les fonctions mathématiques prédéfinies (à base de errno), 
+ *	\note		comme les fonctions mathématiques prédéfinies (à base de errno),
  *	\note		et les futurs traitements qui seront implémentés
  *	\note		Le prototype peut être adapté à votre besoin
  */
@@ -91,11 +123,3 @@ void dbgSymbolListV2(void);
 void dbgSymbol(symbol_t * symbPtr);
 
 #endif
-
-
-
-
-
-
-
-

@@ -32,10 +32,12 @@
 #ifdef _IO_C_			// inclusion par io.c
 #include <stdarg.h>
 #include <stdio.h>
+#include <string.h>
 #include "symbol.h"
 #include "hoc.tab.h"
 #include "color.h"
 #include "io.h"
+#include "msgFmt.c"
 #endif
 #ifdef _CODE_HOC_C_			// inclusion par codeHoc.c
 #include <stdio.h>

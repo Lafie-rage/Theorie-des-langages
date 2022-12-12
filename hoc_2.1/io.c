@@ -6,7 +6,6 @@
  */
 #define _IO_C_
 #include "hoc.h"
-#include "msgFmt.c"
 /**
  *	\var        progName
  *	\brief		Nom du programme
@@ -19,6 +18,26 @@ extern char *progName;
  */
 int lineNo = 0;
 /******************************************************************************/
+
+static struct {
+	int code;
+	short category;
+	char *message;
+} _error = {
+		// Lexical errors
+		LEX_ERR_UNK_WORD,		LEXICAL,		"Unkown Word : #%s#[%d]",
+		LEX_ERR_UNK_OP, 		LEXICAL, 		"Unknow operator : #%s#[%d]",
+		// Syntactic errors
+		SYN_ERR_DEFAULT,		SYNTACTIC, 	"Syntax error [%d]",
+		SYN_ERR_MULTI_OP,		SYNTACTIC, 	"An operator cannot be followed by another [%d]",
+		// Semantic errors
+		SEM_ERR_DIV_ZERO,		SEMANTIC,		"Illegal operation : dividing by 0 [%d]",
+		// Execution errors
+		EXE_ERR_NOT_VAR,		EXECUTION,	"%s -- [%s] is not a variable [%d]",
+		EXE_ERR_UNDEF_VAR,	EXECUTION, 	"%s -- [%s] is undefined [%d]",
+		0, 									0,					NULL
+}
+
 /**
  *	\part		G E S T I O N   DES  S O R T I E S
  */
@@ -80,16 +99,25 @@ void yyerror(char *strErr, ...) {
 	printLn();
     //printMessageTag(47, strErr);
 }
+
+char *getErrorMessageFromMyError() {
+	for(i = 0; _error[i].code != 0; i++) {
+		if(_error[i].code == myerror) return _error[i].message;
+	}
+}
+
 /**
  *	\fn			void lexError(const char* strErr, ...)
  *	\brief		Fonction de gestion des erreurs lexicales
  *	\note		A invoquer explicitement depuis les règles de yylex()
  *	\note		Le prototype peut être adapté à votre besoin
  */
-void lexError (const char* strErr, ...) {
+void lexError (...) {
+	char *strErr = (char *)malloc(strlen(getErrorMessageFromMyError())+1);
+	strcpy(strErr, getErrorMessageFromMyError());
 	va_list pArg;
 	va_start(pArg, strErr);
-		prTagAndMsgFmtWithStyle(6, strErr, pArg);
+	prTagAndMsgFmtWithStyle(6, strErr, pArg);
 	va_end(pArg);
 	printLn();
 	//printMessageTag(48, strErr);
@@ -97,7 +125,7 @@ void lexError (const char* strErr, ...) {
 /**
  *	\fn			void exeError (const char* strErr, ...)
  *	\brief		Fonction de gestion des erreurs d'exécution de fonctions importées,
- *	\note		comme les fonctions mathématiques prédéfinies (à base de errno), 
+ *	\note		comme les fonctions mathématiques prédéfinies (à base de errno),
  *	\note		et les futurs traitements qui seront implémentés
  *	\note		Le prototype peut être adapté à votre besoin
  */
@@ -129,13 +157,13 @@ void printSymbolList(void) {
 			case CST :
 				if (mySp->type == ENTIER) printMessage(63, mySp->name, *(int *)(mySp)->U.pValue);
 				else if (mySp->type == REEL) printMessage(64, mySp->name, *(double *)(mySp)->U.pValue);
-				else if (mySp->type == UNDEF) printMessage(67,mySp->name);				
+				else if (mySp->type == UNDEF) printMessage(67,mySp->name);
 				//else printMessage(67,mySp->name);
 				break;
 			case VAR :
 				if (mySp->type == IVAR) printMessage(63, mySp->name, *(int *)(mySp)->U.pValue);
 				else if (mySp->type == FVAR) printMessage(64,mySp->name, *(double *)(mySp)->U.pValue);
-				else if (mySp->type == UNDEF) printMessage(67,mySp->name);				
+				else if (mySp->type == UNDEF) printMessage(67,mySp->name);
 				//else printMessage(67,mySp->name);
 				break;
 			case PRG :
@@ -144,7 +172,7 @@ void printSymbolList(void) {
 				//else printMessage(67,mySp->name);
 				break;
 			default  : printMessage(68);
-				
+
 		}
 		printf("\n");
 	}
@@ -173,17 +201,17 @@ void printSymbolListByClass(void) {
 	printMessage(70,"\t****\n");
 	printMessage(70,"---- Fonctions prédéfinies \t----\n");
 	for (mySp = _symbolList; mySp != SYMBOL_NULL; mySp = mySp->next)
-		if (mySp->clas == PRG && mySp->type == PREDEF) 
+		if (mySp->clas == PRG && mySp->type == PREDEF)
 			printMessage(75,mySp->name);
 	printMessage(70,"\t****\n");
 	printMessage(70,"---- Opérateurs arithmétiques \t----\n");
 	for (mySp = _symbolList; mySp != SYMBOL_NULL; mySp = mySp->next)
-		if (mySp->clas == PRG && mySp->type != PREDEF) 
+		if (mySp->clas == PRG && mySp->type != PREDEF)
 			printMessage(76,mySp->name);
 	printMessage(70,"\t****\n");
 	printMessage(70,"---- Non-définis \t----\n");
 	for (mySp = _symbolList; mySp != SYMBOL_NULL; mySp = mySp->next)
-		if (mySp->type == UNDEF) 
+		if (mySp->type == UNDEF)
 			printMessage(76,mySp->name);
 	printMessage(70,"\t****\n");
 }
@@ -209,15 +237,15 @@ const char* _strTypeSymbol[]    = {
  */
 void _symbolValue(symbol_t * syPtr, char * value) {
 	switch (syPtr->type) {
-		case ENTIER : case IVAR	: 
+		case ENTIER : case IVAR	:
 			sprintf(value,"%14i",*(int*)(syPtr->U.pValue)); break;
 		case REEL : case FVAR :
 			sprintf(value,"%14.12g",*(double*)(syPtr->U.pValue)); break;
-		case PREDEF : 
+		case PREDEF :
 			sprintf(value,"%-14p",syPtr->U.pValue); break;
 		case UNDEF :
 			sprintf(value,"%-14s","UNDEFINED"); break;
-		default: 
+		default:
 			if (syPtr->clas == PRG) sprintf(value,"%-14p",syPtr->U.pValue);
 	}
 }
@@ -231,7 +259,7 @@ void _symbolValue(symbol_t * syPtr, char * value) {
 void dbgSymbolList(void) {
 	symbol_t *mySp;
 	char value[20];
-	
+
 	printMessage(81); printMessage(82); printMessage(83); printMessage(82);
 	for (mySp = _symbolList; mySp != SYMBOL_NULL; mySp = mySp->next) {
 		_symbolValue(mySp, value);
@@ -242,7 +270,7 @@ void dbgSymbolList(void) {
 void dbgSymbolListV2(void) {
 	symbol_t *mySp;
 	char value[20];
-	
+
 	printMessage(81); printMessage(82); printMessage(83); printMessage(82);
 	for (mySp = _symbolList; mySp != SYMBOL_NULL; mySp = mySp->next) {
 		_symbolValue(mySp, value);
@@ -268,9 +296,9 @@ void dbgSymbol(symbol_t * symbPtr) {
 		 case DAT:
 		 case CST:
 		 case VAR:
-			 if (symbPtr->type == ENTIER || symbPtr->type == IVAR) 
+			 if (symbPtr->type == ENTIER || symbPtr->type == IVAR)
 				 printMessage(91, symbPtr->name, *(int *)symbPtr->U.pValue);
-			 else if (symbPtr->type == REEL || symbPtr->type == FVAR) 
+			 else if (symbPtr->type == REEL || symbPtr->type == FVAR)
 				 printMessage(92, symbPtr->name, *(double*)symbPtr->U.pValue);
 			 else printMessage(95);
 			 break;
