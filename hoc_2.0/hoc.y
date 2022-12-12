@@ -45,17 +45,17 @@ int isFloat = 0;
 
 %%
 liste :	/* VIDE */
-	| liste RC 			{ init (); }
-	| liste expr  RC	{ printExpr(isFloat,$2); init (); }
-	| liste assgn RC    { printExpr(isFloat,$2); init (); }
-	| liste error RC    { yyerrok; yyclearin; init ();}
-	| liste cmd	  RC 	{ init();}
+	| liste error RC 			{ yyerrok; yyclearin; code(STOP); return 1;}
+	| liste RC						{ code(STOP); MYERROR; return 2;}
+	| liste expr RC				{ code((instr_t)printExprCode); code(STOP); MYERROR; return 3;}
+	| liste assgn RC    	{ code((instr_t)printExprCode); code(STOP); MYERROR; return 4; }
+	| liste cmd	  RC 			{ code(STOP); MYERROR; return 5}
 	;
 sym : nbr | var | PREDEF | opAlg
 	;
 nbr : ENTIER | REEL
 	;
-var : UNDEF |  IVAR | FVAR 
+var : UNDEF |  IVAR | FVAR
 	;
 cmd	: PR_TS				{ printSymbolList();}
 	| PR_TS2			{ printSymbolListByClass();}
@@ -64,6 +64,7 @@ cmd	: PR_TS				{ printSymbolList();}
 	| DBG sym			{ dbgSymbol($2); }
 	;
 assgn :
+	var AFF expr { code3((instr_t)varPush, (instr_t)$)}
       IVAR AFF expr		{ $$ = *(int *)$1->U.pValue    = $3; }
 	| FVAR  AFF expr    { $$ = *(double *)$1->U.pValue = $3; }
 	| UNDEF AFF expr    {
@@ -82,7 +83,7 @@ expr :	ENTIER 			{ $$=*(int *)$1->U.pValue; }
 	| FVAR   			{ memcpy((generic)&$$, $1->U.pValue, $1->size); isFloat=1;}
 	| UNDEF				{ printMessageTag(13,$1->name); YYERROR;
 						// yyerror("Undefined variable --%s--\n", $1->name);
-						
+
 						}
 	| PO expr PF  		{ $$=$2; }
 	| expr opAlg expr 	{ $$ = (*($2->U.pFct))($1,$3); }
@@ -99,7 +100,7 @@ expr :	ENTIER 			{ $$=*(int *)$1->U.pValue; }
 char * progName;
 int main(int argc, char **argv) {
     int resParse;
-    
+
 	progName = argv[0];
 	printMessage(0);
 	printMessage(1,"1.4.6");
@@ -114,4 +115,3 @@ void init(void) {
 	prompt();
     isFloat = 0;
 }
-

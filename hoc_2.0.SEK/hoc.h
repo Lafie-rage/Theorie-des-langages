@@ -12,6 +12,7 @@
 #include "symbol.h"
 #include "io.h"
 #include "codeHoc.h"
+#include "code.h"
 #endif
 #ifdef _SYMBOL_C_		// inclusion par symbol.c
 #include <stdlib.h>
@@ -36,10 +37,20 @@
 #include "color.h"
 #include "io.h"
 #endif
-#ifdef _CODE_HOC_C_			// inclusion par codeHoc.c
+#ifdef _CODE_HOC_C_		// inclusion par codeHoc.c
 #include "symbol.h"
+#include "hoc.tab.h"
 #include "io.h"
 #include "codeHoc.h"
+#include "code.h"
+#include <math.h>
+#endif
+#ifdef _CODE_C_			// inclusion par code.c
+#include <stdio.h>
+#include "symbol.h"
+#include "io.h"
+#include "code.h"
+
 #endif
 
 #endif /* _HOC_H_ */
