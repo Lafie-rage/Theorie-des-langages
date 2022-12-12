@@ -33,7 +33,7 @@ void evalVar() {
   d = pop();
   isFloat = d.pSymb->type == FVAR;
   if(d.pSymb->type == UNDEF)
-    exeError("EXEC-E-301: varPush -- [%s] is not a variable", d.pSymb->name);
+    exeError("EXEC-E-301: varPush -- [%s] is not a variable", d.pSymb->name); // Sem
   if(isFloat) {
     d.value = *(double *)(d.pSymb->U.pValue);
     #ifdef DBG_CODE
@@ -52,7 +52,7 @@ void evalVar() {
 void assignVar() {
   data_t d1 = pop(), d2 = pop();
 	if (d1.pSymb->clas != VAR)
-		exeError("[%s] is not a variable, can't assign", d1.pSymb->name);
+		exeError("[%s] is not a variable, can't assign", d1.pSymb->name); // Sem
 	else if (d1.pSymb->type == IVAR)
 		*(int *)(d1.pSymb->U.pValue) = (int)d2.value;
 	else if (d1.pSymb->type == FVAR)
@@ -103,17 +103,17 @@ void mul() {
 
 void myDiv() {
   data_t d2 = pop(), d1 = pop();
-  if(d2.value == 0) exeError("FPE***Division par zéro");
+  if(d2.value == 0) exeError("FPE***Division par zéro"); // Exec
   #ifdef DBG_CODE
     if(d1.pSymb->type == FVAR) {
-      printf("First value is a float and is : %f\n", (double)(d1.pValue));
+      printf("First value is a float and is : %f\n", (double)(d1.value));
     } else {
-      printf("First value is a integer and is : %f\n", (int)(d1.pValue));
+      printf("First value is a integer and is : %d\n", (int)(d1.value));
     }
     if(d2.pSymb->type == FVAR) {
-      printf("Second value is a float and is : %f\n", (double)(d2.pValue));
+      printf("Second value is a float and is : %f\n", (double)(d2.value));
     } else {
-      printf("Second value is an integer and is : %f\n", (int)(d2.pValue));
+      printf("Second value is an integer and is : %d\n", (int)(d2.value));
     }
   #endif
   d1.value = d1.value / d2.value;

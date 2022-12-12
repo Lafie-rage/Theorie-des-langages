@@ -22,7 +22,7 @@ operateur	("+"|"-"|"*"|"/"|"#"|"("|")"|"?"|"??"|"@")
             return (yylval.symb)->type; };
 {operateur}	{ yylval.symb =  lookUpSymbol(yytext);
 			if (yylval.symb==NULL) lexError("Opérateur [%s] inconnu", yytext);
-			return (yylval.symb)->type; };
+			return (yylval.symb)->type; }; // Transformer en utilisant myError
 "="         return AFF;
 \n			return RC;
 {carExclu}+	lexError("Unkown Word : #%s#[%d]", yytext, yyleng);
