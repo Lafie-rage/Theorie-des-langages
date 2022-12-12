@@ -37,7 +37,7 @@ extern int myError;
 %type		<reel> expr assgn
 %type		<symb> opAlg var
 // Typage des tokens d'opérations arithmétiques
-%token 	<symb> ADD SUB MUL DIV POW EQU DIFF INF SUP INFEQU
+%token 	<symb> ADD SUB MUL DIV POW EQU
 %token 	<symb> PO PF
 %token	<symb> PR_TS PR_TS2 DBG_TS
 %token RC
@@ -80,8 +80,8 @@ expr :	ENTIER 			{ code2((instr_t)intPush, (instr_t)$1);  }
 	| SUB expr 			{ code((instr_t)negate); } %prec UNARY_MINUS
 	| PREDEF PO expr PF { code2((instr_t)predef, (instr_t)$1); isFloat=1;}
 	;
-inst-primitive : expr | assgn
-;
+
+
 %%
 
 /**

@@ -19,25 +19,25 @@ pSymbol_t  _symbolList = SYMBOL_NULL ;
  */
 symbol_t* installSymbol (char* tokenName, short tokenClas, short tokenType,
                         short tokenSize, generic tokenPtrValue, char* tokenDesc) {
-    symbol_t *mySp    = (symbol_t *) malloc(sizeof(symbol_t));
-	mySp->name        =  NULL;
-	if (tokenName != NULL) {
-		mySp->name    = (char *) malloc(strlen(tokenName)+1);
-		strcpy(mySp->name, tokenName);
-	}
-	if (tokenDesc == NULL) mySp->desc = mySp->name;
-	else {
-		mySp->desc    = (char *) malloc(strlen(tokenDesc)+1);
-		strcpy(mySp->desc, tokenDesc);
-	}
-    mySp->clas        = tokenClas;
-    mySp->type        = tokenType;
-    mySp->size        = tokenSize;
-    if (tokenClas==PRG) mySp->U.pFct = tokenPtrValue;
-    else mySp->U.pValue      = tokenPtrValue;
-    mySp->next         = _symbolList;
-    _symbolList        = mySp;
-    return mySp;
+  symbol_t *mySp = (symbol_t *) malloc(sizeof(symbol_t));
+  mySp->name = NULL;
+  if (tokenName != NULL) {
+    mySp->name = (char *) malloc(strlen(tokenName)+1);
+    strcpy(mySp->name, tokenName);
+  }
+  if (tokenDesc == NULL) mySp->desc = mySp->name;
+  else {
+    mySp->desc = (char *) malloc(strlen(tokenDesc)+1);
+    strcpy(mySp->desc, tokenDesc);
+  }
+  mySp->clas = tokenClas;
+  mySp->type = tokenType;
+  mySp->size = tokenSize;
+  if (tokenClas == PRG) mySp->U.pFct = tokenPtrValue;
+  else mySp->U.pValue = tokenPtrValue;
+  mySp->next = _symbolList;
+  _symbolList = mySp;
+  return mySp;
 }
 /**
  *	\fn			symbol_t* lookUpSymbol(const char* tokenName)
@@ -52,8 +52,8 @@ symbol_t* lookUpSymbol(const char* tokenName) {
 }
 /******************************************************************************/
 /**
-*	\fn         int* allocInt(int value); 
-*	\brief		Alloue un esapce mémoire et range value dans cet espace. 
+*	\fn         int* allocInt(int value);
+*	\brief		Alloue un esapce mémoire et range value dans cet espace.
 *	\return		Pointeur sur value
 */
 int* allocInt(int value) {
@@ -63,7 +63,7 @@ int* allocInt(int value) {
 }
 /**
  *	\fn         pSymbol_t installIntSymbol(char *name, short clas, int value, char* desc)
- *	\brief		Installe un symbole de type ENTIER dans la table des symboles. 
+ *	\brief		Installe un symbole de type ENTIER dans la table des symboles.
  *	\param		name : nom de la variable ou NULL/"" pour les valeurs littérale
  *	\param		clas : DAT / VAR
  *	\param		value : valeur de l'entier installé
@@ -75,8 +75,8 @@ pSymbol_t installIntSymbol(char *name, short clas, int value, char* desc) {
 }
 /******************************************************************************/
 /**
-*	\fn         double* allocFlo(double value); 
-*	\brief		Alloue un esapce mémoire et range value dans cet espace. 
+*	\fn         double* allocFlo(double value);
+*	\brief		Alloue un esapce mémoire et range value dans cet espace.
 *	\return		Pointeur sur value
 */
 double* allocFlo(double value) {
@@ -85,11 +85,11 @@ double* allocFlo(double value) {
 	return pValue;
 }
 /**
- *	\fn         pSymbol_t installFloSymbol(char *name, short clas, double value, char* desc) 
- *	\brief		Installe un symbole de type REEL dans la table des symboles. 
+ *	\fn         pSymbol_t installFloSymbol(char *name, short clas, double value, char* desc)
+ *	\brief		Installe un symbole de type REEL dans la table des symboles.
  *	\param		name : nom de la variable ou NULL/"" pour les valeurs littérale
  *	\param		clas : DAT / VAR
- *	\param		value : valeur du réel installé 
+ *	\param		value : valeur du réel installé
  *	\return		Pointeur sur le symbole installé
 */
 pSymbol_t installFloSymbol(char *name, short clas, double value, char* desc) {

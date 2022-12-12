@@ -13,15 +13,8 @@ entier		[0-9]+
 reel		([0-9]+\.?)|([0-9]*\.[0-9]+)
 ident		[a-zA-Z][a-zA-Z_0-9]*
 carExclu	[^\-+*/=()a-zA-Z_0-9?@\n \t]
-operateur	("+"|"-"|"*"|"/"|"("|")")
-pr_sy		("printSymbols"|"?")
-pr_sy2		("??")
+operateur	("+"|"-"|"*"|"/"|"#"|"("|")"|"?"|"??"|"@")
 %%
-{pr_sy}		return PR_TS;
-{pr_sy2}	return PR_TS2;
-"@"			return DBG_TS;
-"@@"		return DBG_TS2;
-"debug"		return DBG;
 {entier}    { yylval.symb = installIntSymbol("",DAT,atoi(yytext),NULL); return (yylval.symb)->type; };
 {reel}      { yylval.symb = installFloSymbol("",DAT,atof(yytext),NULL); return (yylval.symb)->type; };
 {ident}		{ yylval.symb =  lookUpSymbol(yytext);

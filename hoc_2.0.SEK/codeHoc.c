@@ -69,8 +69,6 @@ void varAssign(void)
 	push(d2);
 }
 
-
-
 void add(void)
 {
 	data_t d2 = pop(), d1 = pop();

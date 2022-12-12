@@ -13,7 +13,7 @@
  */
 static style_t _styles[] = {
     //  0: style par défaut (prompt, détails,...)
-    "DEFAULT_OUT",   ALL_, OUT,    NORMAL,		BLACK,	DEFAULT,
+    "DEFAULT_OUT",   ALL_, OUT,    INIT,		BLACK,	DEFAULT,
     //  1: styple pour fournir une Information ou faire une Annonce
     "INFORMATION",   ALL_, OUT,    BOLD,    	BLACK,  DEFAULT,
     //  2: Style pour les messages de configuration
@@ -37,7 +37,7 @@ static style_t _styles[] = {
     // 11: style pour la traçabilité (debug) des symboles
     "DBG_SYMBOLES",	SYMB, DBG,		REVERSE,	YELLOW,	DEFAULT,
     // 12: Style pour les messages traçabilité : printSymbolList()
-    "DBG_DETAIL",	ALL_, DBG,		NORMAL,		YELLOW,	DEFAULT,
+    "DBG_DETAIL",	ALL_, DBG,		INIT,		YELLOW,	DEFAULT,
   };
 /**
  *	\var		_whoString[]

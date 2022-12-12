@@ -1,4 +1,0 @@
-Version 1.4.6 -- Upgrade 1.4.5
-
-1/ Definition allocInt() & allocFlo() dans symbol.c et adaptation de installIntSymbol & installFloSymbol()
-2/ Adapatation de assign

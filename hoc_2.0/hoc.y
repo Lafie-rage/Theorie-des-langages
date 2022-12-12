@@ -27,68 +27,53 @@ int isFloat = 0;
 %token	<symb> IVAR FVAR
 /* Token pour fonction prédéfinie */
 %token	<symb> PREDEF
+/* Typage des unités syntaxiques */
+%type		<reel> expr assgn
+%type		<symb> opAlg var
 // Typage des tokens d'opérations arithmétiques
-%token <symb> ADD SUB MUL DIV
-%token <symb> PO PF
-// Tokens sans valeurs sémantiques
+%token 	<symb> ADD SUB MUL DIV POW EQU
+%token 	<symb> PO PF
+%token	<symb> PR_TS PR_TS2 DBG_TS
 %token RC
 %token AFF
-%token PR_TS PR_TS2 DBG_TS DBG_TS2 DBG
-/* Typage des unités syntaxiques */
-%type	<reel> expr assgn
-%type	<symb> opAlg sym
 /* Associativités & priorités */
 %right AFF
 %left ADD SUB
 %left MUL DIV
 %nonassoc UNARY_MINUS
+%right POW
 
 %%
 liste :	/* VIDE */
-	| liste error RC 			{ yyerrok; yyclearin; code(STOP); return 1;}
-	| liste RC						{ code(STOP); MYERROR; return 2;}
-	| liste expr RC				{ code((instr_t)printExprCode); code(STOP); MYERROR; return 3;}
-	| liste assgn RC    	{ code((instr_t)printExprCode); code(STOP); MYERROR; return 4; }
-	| liste cmd	  RC 			{ code(STOP); MYERROR; return 5}
+	| liste error RC 				{ yyerrok; yyclearin; code(STOP); return 1;}
+	| liste RC							{ code(STOP); return 2;}
+	| liste expr RC					{ code((instr_t)printExprCode); code(STOP); return 3;}
+	| liste assgn RC    		{ code((instr_t)printExprCode); code(STOP); return 4; }
+	| liste cmd	  RC 				{ code(STOP); return 5;}
 	;
-sym : nbr | var | PREDEF | opAlg
+
+cmd	: PR_TS								{code ((instr_t)*($1->U.pFct));}
+	| PR_TS2								{code ((instr_t)*($1->U.pFct));}
+	| DBG_TS								{code((instr_t)*($1->U.pFct)); }
 	;
-nbr : ENTIER | REEL
-	;
+
 var : UNDEF |  IVAR | FVAR
 	;
-cmd	: PR_TS				{ printSymbolList();}
-	| PR_TS2			{ printSymbolListByClass();}
-	| DBG_TS			{ dbgSymbolList(); }
-	| DBG_TS2			{ dbgSymbolListV2(); }
-	| DBG sym			{ dbgSymbol($2); }
-	;
-assgn :
-	var AFF expr { code3((instr_t)varPush, (instr_t)$)}
-      IVAR AFF expr		{ $$ = *(int *)$1->U.pValue    = $3; }
-	| FVAR  AFF expr    { $$ = *(double *)$1->U.pValue = $3; }
-	| UNDEF AFF expr    {
-        $1->type = (isFloat)?FVAR:IVAR;
-        $1->size = (isFloat)?sizeof(double):sizeof(int);
-       	if (isFloat) $1->U.pValue = allocFlo($3);
-		else $1->U.pValue = allocInt($3);
-		$$ =  $3;
-    }
-	;
-opAlg : ADD | SUB | MUL | DIV
-	;
-expr :	ENTIER 			{ $$=*(int *)$1->U.pValue; }
-    | REEL 				{ memcpy((generic)&$$, $1->U.pValue, $1->size); isFloat=1;}
-	| IVAR  			{ $$=*(int *)$1->U.pValue; }
-	| FVAR   			{ memcpy((generic)&$$, $1->U.pValue, $1->size); isFloat=1;}
-	| UNDEF				{ printMessageTag(13,$1->name); YYERROR;
-						// yyerror("Undefined variable --%s--\n", $1->name);
 
-						}
-	| PO expr PF  		{ $$=$2; }
-	| expr opAlg expr 	{ $$ = (*($2->U.pFct))($1,$3); }
-	| SUB expr 			{ $$ = -$2; } %prec UNARY_MINUS
-	| PREDEF PO expr PF { $$ = (*($1->U.pFct))($3); isFloat=1;}
+assgn :
+  var AFF expr		{ code3((instr_t)varPush, (instr_t)$1, (instr_t)assignVar); }
+	;
+
+opAlg : ADD | SUB | MUL | DIV | POW
+	;
+
+expr :	ENTIER 						{ code2((instr_t)intPush, (instr_t)$1); }
+    | 	REEL 							{ code2((instr_t)floPush, (instr_t)$1); isFloat=1; }
+		| 	var  							{ code3((instr_t)varPush, (instr_t)$1, (instr_t)evalVar); }
+		|	 	PO expr PF  			{ $$=$2; }
+		| 	expr opAlg expr 	{ code((instr_t)*($2->U.pFct));}
+		| 	SUB expr 					{ code((instr_t)negate); } %prec UNARY_MINUS
+		|		PREDEF PO expr PF { code2((instr_t)predef, (instr_t)$1); isFloat = 1;}
 	;
 %%
 
@@ -103,15 +88,12 @@ int main(int argc, char **argv) {
 
 	progName = argv[0];
 	printMessage(0);
-	printMessage(1,"1.4.6");
-    installDefaultSymbols();
-    init();
-//    while ((resParse=yyparse())!=0) init();
-    resParse=yyparse();
-    printf("Le parseur se termine dans l'état %d\n", resParse);
-    return 0;
-}
-void init(void) {
-	prompt();
-    isFloat = 0;
+	printMessage(1,"2.0");
+  installDefaultSymbols();
+
+	for (initCode(); ((resParse=yyparse()) != 0); initCode()) {
+		execute(PC);
+	}
+  printf("Le parseur se termine dans l'état %d\n", resParse);
+  return 0;
 }

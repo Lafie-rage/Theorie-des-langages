@@ -1,19 +1,19 @@
 #define _CODE_C_
 #include "hoc.h"
 
-// Table de code
-instr_t prog[MAX_PROG];
-instr_t *progPtr;
-instr_t *PC;
+extern int isFloat;
+
+static instr_t prog[MAX_PROG];
+static instr_t *progPtr;
+static data_t pile[MAX_PILE];
+static data_t *pilePtr;
 
 instr_t *code(instr_t frame) {
   instr_t *adr = progPtr;
-  if (progPtr >= &prog[MAX_PROG]) printMessageTag(19);
-  *progPtr++ = frame;
-  #ifdef DBG_CODE
-  printf("Debug code %p\n", frame);
-  #endif
-  return adr;
+	if (progPtr >= &prog[MAX_PROG])
+		printMessageTag(19);
+	*progPtr++ = frame;
+	return adr;
 }
 
 void execute(instr_t *p) {
@@ -22,9 +22,14 @@ void execute(instr_t *p) {
   }
 }
 
-// Pile de données
-data_t pile[MAX_PILE];
-data_t *pilePtr;
+void initCode(void)
+{
+	pilePtr = pile;
+	progPtr = prog;
+	PC = prog;
+	isFloat = 0;
+	prompt();
+}
 
 data_t pop(void) {
   data_t d;

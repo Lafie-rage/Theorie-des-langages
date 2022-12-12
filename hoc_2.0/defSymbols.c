@@ -4,7 +4,7 @@
  *	\brief		Déclaration des symboles prédéfinis et chargement dans la TS
  *	\date		22 Janvier 2021
  *	\author		Samir El Khattabi
-*/                 
+*/
 #include "hoc.tab.h"
 /**
  *	\var		_consts[]
@@ -36,7 +36,10 @@ _consts[] = {
  *	\note		CLASSE 	: PRG
  *	\note		TYPE 	: PREDEF
 */
-static struct { char *pdName; double (*pdPtrFunc) ();  char* pdDesc; }
+static struct {
+  char *pdName;
+  pFctMath_t pdPtrFunc;
+  char* pdDesc; }
 _preDefs[] = {
     "sin",      sin,    	"sinus",
     "cos",      cos,    	"cosinus",
@@ -59,21 +62,45 @@ _preDefs[] = {
  *	\note		CLASSE 	: PRG
  *	\note		TYPE 	: ADD/SUB/MUL/DIV/PO/PF
 */
-static struct { char *opName; short  opType; pFctMath_t opPtrFunc; char* opDesc; } _opExpr[] = {
+static struct {
+  char *opName;
+  short  opType;
+  void (*opPtrFunc)();
+  char* opDesc;
+} _opExpr[] = {
 	"+",    ADD,    add,    "addition",
 	"-",    SUB,    sub,    "soustraction",
 	"*",    MUL,    mul,    "multiplication",
 	"/",    DIV,    myDiv,  "division",
+  "#",    POW,    power,  "puissance",
 	"(",    PO,     0,      "(",
 	")",    PF,     0,      ")",
+	 NULL,  0,      NULL,      NULL
+};
+
+static struct {
+  char *cmdName;
+  short cmdType;
+  void (*cmdPrtFunc)();
+  char *cmdDesc;
+} _cmdExpr[] = {
+
+  "?", PR_TS, printSymbolList, "affichage table des symboles",
+  "print", PR_TS, printSymbolList, "affichage table des symboles",
+  "??", PR_TS2, printSymbolListByClass, "affichage table des symboles par classe",
+  "@", DBG_TS, dbgSymbolList, "affichage table des symboles et leurs informations",
 	 NULL,  0,      NULL,      NULL
 };
 #define INSTALL_DEFAULT_OPE(i)\
 		installSymbol(_opExpr[i].opName, PRG, _opExpr[i].opType, sizeof(double),\
 					  (generic) _opExpr[i].opPtrFunc, _opExpr[i].opDesc)
+
+#define INSTALL_DEFAULT_CMD(i)\
+  installSymbol(_cmdExpr[i].cmdName, PRG, _cmdExpr[i].cmdType, sizeof(double),\
+            (generic) _cmdExpr[i].cmdPrtFunc, _cmdExpr[i].cmdDesc)
 /**
  *	\fn         void installDefaultSymbols (void)
- *	\brief		Installe les symboles par défaut dans la table des symboles : 
+ *	\brief		Installe les symboles par défaut dans la table des symboles :
  *				<UL><LI>Constantes : PI, E, ...</LI>
  *					<LI>Fonctions mathématiques : sin(), cos(), ...
  *				</UL>
@@ -83,7 +110,7 @@ void installDefaultSymbols (void) {
     int * pInt;
     double *pFlo;
 	printMessage(3);
- 	// Installation des constantes 
+ 	// Installation des constantes
 	printMessage(4);
     for (i = 0; _consts[i].cName!=NULL;  i++)
         if (_consts[i].cType==ENTIER) INSTALL_DEFAULT_INT_CST(i);
@@ -96,5 +123,8 @@ void installDefaultSymbols (void) {
 	// Installation des opérateurs
 	printMessage(6);
 	for (i = 0; _opExpr[i].opName != NULL; i++) INSTALL_DEFAULT_OPE(i);
+  printMessage(7);
+  // Initialisation des commades
+  for (i = 0; _cmdExpr[i].cmdName != NULL; i++) INSTALL_DEFAULT_CMD(i);
 	printMessage(9);
 }

@@ -1,10 +1,16 @@
-void nbrPush();
-void varPush();
-void evalVar();
-void assignVar();
-void predef();
+void intPush(void);
+void floPush(void);
+void varPush(void);
+void evalVar(void);
+void assignVar(void);
+void predef(void);
 
-void add();
-void sub();
-void mul();
-void myDiv();
+void add(void);
+void sub(void);
+void mul(void);
+void myDiv(void);
+void negate(void);
+void power(void);
+void predef(void);
+
+void printExprCode(void);

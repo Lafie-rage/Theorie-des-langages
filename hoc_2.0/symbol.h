@@ -21,16 +21,16 @@ typedef double (*pFctMath_t)();
  * 	\brief		Définition du type de données "symbole" de type struct
  */
 typedef struct symbol {
-    char	*name;			// Nom du symbole : identifiant
-    short	clas;			// Classe du symbole : DAT, CST, VAR
-    short	type;			// Type du symbole : ENTIER, REEL, UNDEF
-    union {
+      char	*name;			// Nom du symbole : identifiant
+      short	clas;			// Classe du symbole : DAT, CST, VAR
+      short	type;			// Type du symbole : ENTIER, REEL, UNDEF
+      union {
         generic pValue;     // Pointeur générique sur la valeur du symbole
-		pFctMath_t pFct;	// Pointeur sur Fct
-    } U;
-    short	size;			// Taille mémoire occupée par la valeur
-	char	*desc;			// Description du symbole
-   struct	symbol *next;	// Pointeur sur symbole suivant
+		    pFctMath_t pFct;	// Pointeur sur Fct
+      } U;
+      short	size;			// Taille mémoire occupée par la valeur
+	    char	*desc;			// Description du symbole
+      struct	symbol *next;	// Pointeur sur symbole suivant
 } symbol_t;
 /**
  *	\typedef	pSymbol_t
@@ -58,14 +58,14 @@ symbol_t* installSymbol (char* tokenName, short tokenClas, short tokenType,
 symbol_t* lookUpSymbol (const char* tokenName);
 /******************************************************************************/
 /**
-*	\fn         int* allocInt(int value); 
-*	\brief		Alloue un esapce mémoire et range value dans cet espace. 
+*	\fn         int* allocInt(int value);
+*	\brief		Alloue un esapce mémoire et range value dans cet espace.
 *	\return		Pointeur sur value
 */
 int* allocInt(int value);
 /**
  *	\fn         pSymbol_t installIntSymbol(char *name, short clas, int value, char* desc)
- *	\brief		Installe un symbole de type ENTIER dans la table des symboles. 
+ *	\brief		Installe un symbole de type ENTIER dans la table des symboles.
  *	\param		name : nom de la variable ou NULL/"" pour les valeurs littérale
  *	\param		clas : DAT / VAR
  *	\param		value : valeur de l'entier installé
@@ -74,23 +74,23 @@ int* allocInt(int value);
 pSymbol_t installIntSymbol(char *name, short clas, int value, char* desc);
 /******************************************************************************/
 /**
-*	\fn         double* allocFlo(double value); 
-*	\brief		Alloue un esapce mémoire et range value dans cet espace. 
+*	\fn         double* allocFlo(double value);
+*	\brief		Alloue un esapce mémoire et range value dans cet espace.
 *	\return		Pointeur sur value
 */
 double* allocFlo(double value);
 /**
- *	\fn         pSymbol_t installFloSymbol(char *name, short clas, double value, char* desc) 
- *	\brief		Installe un symbole de type REEL dans la table des symboles. 
+ *	\fn         pSymbol_t installFloSymbol(char *name, short clas, double value, char* desc)
+ *	\brief		Installe un symbole de type REEL dans la table des symboles.
  *	\param		name : nom de la variable ou NULL/"" pour les valeurs littérale
  *	\param		clas : DAT / VAR
- *	\param		value : valeur du réel installé 
+ *	\param		value : valeur du réel installé
  *	\return		Pointeur sur le symbole installé
 */
 pSymbol_t installFloSymbol(char *name, short clas, double value, char* desc);
 /**
  *	\fn         void installDefaultSymbols(void)
- *	\brief		Installe les symboles par défaut dans la table des symboles : 
+ *	\brief		Installe les symboles par défaut dans la table des symboles :
  *				<UL><LI>Constantes : PI, E, ...</LI>
  *					<LI>Fonctions mathématiques : sin(), cos(), ...
  *				</UL>

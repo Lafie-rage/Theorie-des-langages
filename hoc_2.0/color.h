@@ -7,7 +7,7 @@
 #ifndef _COLOR_H_
 #define _COLOR_H_
 #if defined(_COLOR_C_)
-typedef enum {INIT, BOLD, UNBOLD, ITALIC, BLINK, UNDER, NORMAL, REVERSE} decoration_t;
+typedef enum {INIT, BOLD, UNBOLD, ITALIC, UNDER, BLINK, DBLINK, REVERSE} decoration_t;
 typedef enum {BLACK, RED, GREEN,  YELLOW, BLUE, MAGENTA, CYAN,  WHITE, SET, DEFAULT} color_t;
 typedef enum {STDOUT, STDERR} outputList;
 typedef enum {ALL_, LEX_, YACC, EXEC, SYMB} who_t;
