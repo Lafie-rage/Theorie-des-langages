@@ -1,8 +1,8 @@
 /**
  *	\file		hoc.y
  *	\version	2.0
- *	\date		1 Fevrier 2022
- *	\author	Loïc Coquerelle
+ *	\date		10 déc 2022
+ *	\author	Corentin Destrez
 */
 %{
 #define _HOC_Y_
@@ -35,7 +35,7 @@ extern int myError;
 %token	<symb> PREDEF
 /* Typage des unités syntaxiques */
 %type		<reel> expr assgn
-%type		<symb> opAlg var opLog
+%type		<symb> opAlg var
 // Typage des tokens d'opérations arithmétiques
 %token 	<symb> ADD SUB MUL DIV POW EQU DIFF INF SUP INFEQU
 %token 	<symb> PO PF
@@ -71,14 +71,12 @@ assgn :
 // US : Expression algébrique
 opAlg : ADD | SUB | MUL | DIV | POW
 	;
-opLog : EQU | DIFF | INF | SUP | INFEQU
-    ;
+
 expr :	ENTIER 			{ code2((instr_t)intPush, (instr_t)$1);  }
 	| REEL 				{ code2((instr_t)floPush, (instr_t)$1); isFloat=1;}
 	| var  				{ code3((instr_t)varPush, (instr_t)$1, (instr_t)varEval); }
 	| PO expr PF  		{ $$=$2; }
 	| expr opAlg expr 	{ code ((instr_t)*($2->U.pFct)); }
-	| expr opLog expr 	{ code ((instr_t)*($2->U.pFct)); }
 	| SUB expr 			{ code((instr_t)negate); } %prec UNARY_MINUS
 	| PREDEF PO expr PF { code2((instr_t)predef, (instr_t)$1); isFloat=1;}
 	;

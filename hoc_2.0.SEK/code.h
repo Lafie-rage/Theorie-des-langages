@@ -1,3 +1,10 @@
+/**
+ *	\file		code.h
+ *	\brief	GESTION DES PILE DE DONNEES ET TABLE DE CODES
+ *	\date		10 déc 2022
+ *	\author	Corentin Destrez
+ */
+
 #ifndef _CODE_H_
 #define _CODE_H_
 

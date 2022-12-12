@@ -1,3 +1,10 @@
+/**
+ *	\file		code.c
+ *	\brief	GESTION DES PILE DE DONNEES ET TABLE DE CODES
+ *	\date		10 déc 2022
+ *	\author	Corentin Destrez
+ */
+
 #define _CODE_C_
 #include "hoc.h"
 

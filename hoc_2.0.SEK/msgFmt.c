@@ -1,8 +1,8 @@
 /**
  *	\file		msgFmt.c
- *	\brief		D E C L A R A T I O N   DES  M E S S A G E S
- *	\date		1 Fevrier 2022
- *	\author	Loïc Coquerelle
+ *	\brief	DECLARATION DES MESSAGES
+ *	\date		10 déc 2022
+ *	\author	Corentin Destrez
  */
 
 static struct

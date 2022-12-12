@@ -1,9 +1,9 @@
 /**
  *	\file		defSymbols.c
- *	\brief		S Y M B O L E S     P R E D E F I N I S
+ *	\brief	SYMBOLES PREDEFINIS
  *	\brief	Déclaration des symboles prédéfinis et chargement dans la TS
- *	\date		1 Fevrier 2022
- *	\author	Loïc Coquerelle
+ *	\date		10 déc 2022
+ *	\author	Corentin Destrez
 */
 #include "hoc.tab.h"
 /**

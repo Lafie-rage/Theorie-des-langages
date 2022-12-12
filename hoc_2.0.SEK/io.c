@@ -1,8 +1,8 @@
 /**
  *	\file		io.c
- *	\brief		G E S T I O N   DES   S O R T I E S  &   E R R E U R S
- *	\date		1 Fevrier 2022
- *	\author		Loïc Coquerelle
+ *	\brief	GESTION DES SORTIES & ERREURS
+ *	\date		10 déc 2022
+ *	\author	Corentin Destrez
  */
 #define _IO_C_
 #include "hoc.h"
@@ -111,7 +111,7 @@ void lexError(const char *strErr, ...)
 /**
  *	\fn			void exeError (const char* strErr, ...)
  *	\brief		Fonction de gestion des erreurs d'exécution de fonctions importées,
- *	\note		comme les fonctions mathématiques prédéfinies (à base de errno), 
+ *	\note		comme les fonctions mathématiques prédéfinies (à base de errno),
  *	\note		et les futurs traitements qui seront implémentés
  *	\note		Le prototype peut être adapté à votre besoin
  */

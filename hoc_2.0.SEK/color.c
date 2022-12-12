@@ -1,8 +1,8 @@
 /**
  *	\file		color.c
- *	\brief		G E S T I O N   DES  C O U L E U R S
- *	\date		1 Fevrier 2022
- *	\author	Loïc Coquerelle
+ *	\brief	GESTION DES COULEURS
+ *	\date		10 déc 2022
+ *	\author	Corentin Destrez
  */
 
 #define _COLOR_C_

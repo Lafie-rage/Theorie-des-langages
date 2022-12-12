@@ -1,8 +1,8 @@
 /**
  *	\file		hoc.y
  *	\version	2.0
- *	\date		1 Fevrier 2022
- *	\author	Loïc Coquerelle
+ *	\date		10 déc 2022
+ *	\author	Corentin Destrez
 */
 %{
 #define _HOC_L_

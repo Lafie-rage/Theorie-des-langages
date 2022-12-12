@@ -1,3 +1,10 @@
+/**
+ *	\file		codeHoc.c
+ *	\brief	GESTION DES OPERATEURS
+ *	\date		10 déc 2022
+ *	\author	Corentin Destrez
+ */
+
 #define _CODE_HOC_C_
 #include "hoc.h"
 extern int isFloat;

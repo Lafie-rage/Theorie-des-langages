@@ -1,3 +1,10 @@
+/**
+ *	\file		codeHoc.h
+ *	\brief	GESTION DES OPERATEURS
+ *	\date		10 déc 2022
+ *	\author	Corentin Destrez
+ */
+
 #ifndef _CODE_HOC_H_
 #define _CODE_HOC_H_
 
