@@ -83,7 +83,7 @@ void yyerror (char* strErr, ...);
  *	\note		A invoquer explicitement depuis les règles de yylex()
  *	\note		Le prototype peut être adapté à votre besoin
  */
-void lexError (const char* strErr, ...);
+void lexError (int myerror, ...);
 /**
  *	\fn			void exeError (const char* strErr, ...)
  *	\brief		Fonction de gestion des erreurs d'exécution de fonctions importées,

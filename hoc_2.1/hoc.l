@@ -28,10 +28,10 @@ pr_sy2		("??")
     		if (yylval.symb==NULL) yylval.symb=installSymbol(yytext,VAR,UNDEF,0,NULL, NULL);
             return (yylval.symb)->type; };
 {operateur}	{ yylval.symb =  lookUpSymbol(yytext);
-			if (yylval.symb==NULL) lexError("Opérateur [%s] inconnu", yytext);
+			if (yylval.symb==NULL) lexError(LEX_ERR_UNK_OP, yytext);
 			return (yylval.symb)->type; };
 \n			return RC;
-{carExclu}+	lexError("Unkown Word : #%s#[%d]", yytext, yyleng);
+{carExclu}+	lexError(LEX_ERR_UNK_WORD, yytext, yyleng);
 .			;
 			/* Tout ce qui n'est pas spécifié, sera ignoré */
 <<EOF>>		return 0;	/* ^D = fin de ... */

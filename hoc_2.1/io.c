@@ -23,7 +23,7 @@ static struct {
 	int code;
 	short category;
 	char *message;
-} _error = {
+} _error[] = {
 		// Lexical errors
 		LEX_ERR_UNK_WORD,		LEXICAL,		"Unkown Word : #%s#[%d]",
 		LEX_ERR_UNK_OP, 		LEXICAL, 		"Unknow operator : #%s#[%d]",
@@ -36,7 +36,7 @@ static struct {
 		EXE_ERR_NOT_VAR,		EXECUTION,	"%s -- [%s] is not a variable [%d]",
 		EXE_ERR_UNDEF_VAR,	EXECUTION, 	"%s -- [%s] is undefined [%d]",
 		0, 									0,					NULL
-}
+};
 
 /**
  *	\part		G E S T I O N   DES  S O R T I E S
@@ -100,7 +100,8 @@ void yyerror(char *strErr, ...) {
     //printMessageTag(47, strErr);
 }
 
-char *getErrorMessageFromMyError() {
+char *getErrorMessageFromMyError(int myerror) {
+	int i;
 	for(i = 0; _error[i].code != 0; i++) {
 		if(_error[i].code == myerror) return _error[i].message;
 	}
@@ -112,11 +113,11 @@ char *getErrorMessageFromMyError() {
  *	\note		A invoquer explicitement depuis les règles de yylex()
  *	\note		Le prototype peut être adapté à votre besoin
  */
-void lexError (...) {
-	char *strErr = (char *)malloc(strlen(getErrorMessageFromMyError())+1);
-	strcpy(strErr, getErrorMessageFromMyError());
+void lexError (int myerror, ...) {
+	char *strErr = (char *)malloc(strlen(getErrorMessageFromMyError(myerror))+1);
+	strcpy(strErr, getErrorMessageFromMyError(myerror));
 	va_list pArg;
-	va_start(pArg, strErr);
+	va_start(pArg, myerror);
 	prTagAndMsgFmtWithStyle(6, strErr, pArg);
 	va_end(pArg);
 	printLn();
